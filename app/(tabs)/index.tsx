@@ -17,7 +17,7 @@ export default function Index() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Hello, world! XdDs</ThemedText>
+        <ThemedText type="title">Buen dia,{'\n'}React Native!</ThemedText>
         <HelloWave />
       </ThemedView>
     </ParallaxScrollView>
