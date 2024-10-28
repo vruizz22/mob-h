@@ -1,6 +1,9 @@
 // Un timer que mostará el tiempo transcurrido desde que se abrió la aplicación en segundos.
 
-import { Text, View, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from './ThemedText';
+
 import { useState, useEffect } from 'react';
 
 export default function TimerCount() {
@@ -15,15 +18,19 @@ export default function TimerCount() {
   }, []);
 
   return (
-    <View style={styles.timerContainer}>
-      <Text style={styles.timerText}>Tiempo transcurrido: {time} segundos</Text>
-    </View>
+    <ThemedView style={styles.timerContainer}>
+      <ThemedText style={styles.timerText}>
+        Tiempo transcurrido: {time} segundos
+      </ThemedText>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
   timerContainer: {
     padding: 10,
+    marginBottom: 10,
+    marginTop: 10,
   },
   timerText: {
     fontSize: 16,

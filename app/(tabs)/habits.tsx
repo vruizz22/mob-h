@@ -1,10 +1,12 @@
-import { StyleSheet, Button, ScrollView, Alert } from 'react-native';
+import { ScrollView, Alert, StyleSheet } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import HabitCard from '@/components/HabitCard';
 import InputHabit from '@/components/InputHabit';
 import TimerCount from '@/components/TimerCount';
 import { ThemedView } from '@/components/ThemedView';
+import { ThemedButton } from '@/components/ThemedButton';
+import { useTheme } from '@/context/ThemeContext';
 
 import { useState } from 'react';
 
@@ -18,6 +20,7 @@ const initialHabits = [
 export default function App() {
   const [habits, setHabits] = useState(initialHabits);
   const [newHabit, setNewHabit] = useState('');
+  const { colors } = useTheme(); // Obtén los colores actuales del tema
 
   function handleHabitDeletion(habitID: number) {
     // Deja solo los hábitos cuyo nombre no sea igual al hábito que se quiere eliminar
@@ -42,29 +45,30 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <TimerCount />
-        {/*SafeAreaView es un contenedor que se ajusta a los márgenes del dispositivo */}
-        <ThemedView style={styles.inputContainer}>
+      <SafeAreaView
+        style={[styles.safeArea, { backgroundColor: colors.background }]}
+      >
+        <ThemedView style={styles.container}>
+          <TimerCount />
           <InputHabit onChangeText={setNewHabit} value={newHabit} />
-        </ThemedView>
-        <ScrollView style={styles.scrollView}>
-          <Button
+          <ThemedButton
             title="Agregar Hábito"
             onPress={() => {
               addHabit(newHabit);
               setNewHabit('');
             }}
           />
-          {habits.map((habit) => (
-            <HabitCard
-              key={habit.id}
-              id={habit.id}
-              name={habit.name}
-              onDelete={handleHabitDeletion}
-            />
-          ))}
-        </ScrollView>
+          <ScrollView contentContainerStyle={styles.scrollViewContent}>
+            {habits.map((habit) => (
+              <HabitCard
+                key={habit.id}
+                id={habit.id}
+                name={habit.name}
+                onDelete={handleHabitDeletion}
+              />
+            ))}
+          </ScrollView>
+        </ThemedView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -73,14 +77,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start', // Asegura que los elementos se alineen al principio
-    backgroundColor: '#ecf0f1',
-    padding: 8,
   },
-  inputContainer: {
-    marginBottom: 100, // Espacio entre el input y el ScrollView
+  safeArea: {
+    flex: 1, // Para que ocupe toda la pantalla
   },
-  scrollView: {
-    flex: 1, // Ocupa el espacio restante
+  scrollViewContent: {
+    paddingHorizontal: 10,
+    paddingVertical: 20,
   },
 });

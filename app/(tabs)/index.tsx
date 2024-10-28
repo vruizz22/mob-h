@@ -1,4 +1,6 @@
 import { Image, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -6,6 +8,18 @@ import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 
 export default function Index() {
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    const fetchName = async () => {
+      const storedName = await AsyncStorage.getItem('username');
+      if (storedName) {
+        setName(storedName);
+      }
+    };
+    fetchName();
+  }, []);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -17,7 +31,10 @@ export default function Index() {
       }
     >
       <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Buen dia,{'\n'}React Native!</ThemedText>
+        <ThemedText type="title">
+          Buen dia,{'\n'}
+          {name}!
+        </ThemedText>
         <HelloWave />
       </ThemedView>
     </ParallaxScrollView>

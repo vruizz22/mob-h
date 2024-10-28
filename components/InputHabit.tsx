@@ -1,6 +1,8 @@
+// InputHabit.tsx
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { StyleSheet, TextInput } from 'react-native';
+import { ThemedView } from '@/components/ThemedView';
+import { useTheme } from '@/context/ThemeContext';
 
 interface InputHabitProps {
   onChangeText: (text: string) => void;
@@ -8,27 +10,34 @@ interface InputHabitProps {
 }
 
 const InputHabit: React.FC<InputHabitProps> = ({ onChangeText, value }) => {
+  const { colors } = useTheme(); // Obtén los colores actuales del tema
+
   return (
-    <SafeAreaProvider>
-      <SafeAreaView>
-        <View style={styles.container}>
-          <TextInput
-            style={styles.inputhabit}
-            onChangeText={onChangeText}
-            value={value}
-            placeholder="Ingresa un Hábito"
-          />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <ThemedView style={styles.container}>
+      <TextInput
+        style={[
+          styles.inputHabit,
+          {
+            color: colors.text, // Color del texto en el input
+            borderColor: colors.icon, // Color del borde del input
+          },
+        ]}
+        onChangeText={onChangeText}
+        value={value}
+        placeholder="Ingresa un Hábito"
+        placeholderTextColor={colors.icon} // Color del texto del placeholder
+      />
+    </ThemedView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    marginBottom: 10,
+    marginTop: 10,
   },
-  inputhabit: {
+  inputHabit: {
     height: 40,
     margin: 12,
     borderWidth: 1,

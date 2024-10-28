@@ -1,10 +1,13 @@
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useState } from 'react';
 import {
   GestureHandlerRootView,
   Swipeable,
 } from 'react-native-gesture-handler';
+
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
@@ -39,9 +42,9 @@ export default function HabitCard(props: HabitCardProps) {
   }
 
   const renderRightActions = () => (
-    <View style={styles.delete}>
+    <ThemedView style={styles.delete}>
       <Ionicons name="trash-outline" size={24} color="black" />
-    </View>
+    </ThemedView>
   );
 
   return (
@@ -50,16 +53,18 @@ export default function HabitCard(props: HabitCardProps) {
         renderRightActions={renderRightActions}
         onSwipeableOpen={handleDelete}
       >
-        <Card style={styles.habitCard}>
-          <View style={styles.row}>
-            <Text style={styles.habitName}>{props.name}</Text>
-            <View style={styles.counterContainer}>
-              <Button onPress={handleDecrease} title="-" />
-              <Text style={styles.counter}>{count}</Text>
-              <Button onPress={handleIncrease} title="+" />
-            </View>
-          </View>
-        </Card>
+        <ThemedView style={styles.habitCard}>
+          <Card>
+            <ThemedView style={styles.row}>
+              <ThemedText style={styles.habitName}>{props.name}</ThemedText>
+              <ThemedView style={styles.counterContainer}>
+                <Button onPress={handleDecrease} title="-" />
+                <ThemedText style={styles.counter}>{count}</ThemedText>
+                <Button onPress={handleIncrease} title="+" />
+              </ThemedView>
+            </ThemedView>
+          </Card>
+        </ThemedView>
       </Swipeable>
     </GestureHandlerRootView>
   );
