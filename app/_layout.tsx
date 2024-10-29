@@ -1,5 +1,6 @@
 // app/_layout.tsx
 import { ThemeProvider } from '@/context/ThemeContext';
+import { HourProvider } from '@/context/HourContext';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,11 +47,13 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <Stack>
-        <Stack.Screen name="welcome" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <HourProvider>
+        <Stack>
+          <Stack.Screen name="welcome" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </HourProvider>
     </ThemeProvider>
   );
 }

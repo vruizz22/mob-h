@@ -6,9 +6,11 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
+import { useHour } from '@/context/HourContext';
 
 export default function Index() {
   const [name, setName] = useState('');
+  const { hourContext } = useHour();
 
   useEffect(() => {
     const fetchName = async () => {
@@ -30,9 +32,11 @@ export default function Index() {
         />
       }
     >
+      {/* Contextualizador de la hora, entregando tres contextos: (Dia, Tarde, Noche) */}
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">
-          Buen dia,{'\n'}
+          Buen {hourContext === 'dia' ? 'día' : hourContext}
+          {'\n'}
           {name}!
         </ThemedText>
         <HelloWave />
