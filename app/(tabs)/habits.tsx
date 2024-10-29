@@ -22,7 +22,7 @@ interface Habit {
 
 const initialHabits: Habit[] = [];
 
-export default function App() {
+export default function HabitScreen() {
   const [habits, setHabits] = useState(initialHabits);
   const [newHabit, setNewHabit] = useState('');
   const { colors } = useTheme(); // Obtén los colores actuales del tema
@@ -57,7 +57,6 @@ export default function App() {
       isActive={isActive} // Cambia el estilo de la tarjeta si está en modo de arrastre
     />
   );
-  
 
   return (
     <SafeAreaProvider>
