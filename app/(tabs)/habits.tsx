@@ -1,5 +1,6 @@
-import { ScrollView, Alert, StyleSheet } from 'react-native';
+import { Alert, StyleSheet } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import HabitCard from '@/components/HabitCard';
 import InputHabit from '@/components/InputHabit';
@@ -9,13 +10,17 @@ import { ThemedButton } from '@/components/ThemedButton';
 import { useTheme } from '@/context/ThemeContext';
 
 import { useState } from 'react';
+import DraggableFlatList, {
+  RenderItemParams,
+} from 'react-native-draggable-flatlist';
 
-// Lista de hábitos iniciales
-const initialHabits = [
-  { id: 1, name: 'Habito 1' },
-  { id: 2, name: 'Habito 2' },
-  { id: 3, name: 'Habito 3' },
-];
+// Lista de hábitos iniciales, vacía
+interface Habit {
+  id: number;
+  name: string;
+}
+
+const initialHabits: Habit[] = [];
 
 export default function App() {
   const [habits, setHabits] = useState(initialHabits);
@@ -43,6 +48,17 @@ export default function App() {
     ]);
   }
 
+  const renderItem = ({ item, drag, isActive }: RenderItemParams<Habit>) => (
+    <HabitCard
+      id={item.id}
+      name={item.name}
+      onDelete={handleHabitDeletion}
+      onLongPress={drag} // Activa el arrastre al hacer long press
+      isActive={isActive} // Cambia el estilo de la tarjeta si está en modo de arrastre
+    />
+  );
+  
+
   return (
     <SafeAreaProvider>
       <SafeAreaView
@@ -58,16 +74,15 @@ export default function App() {
               setNewHabit('');
             }}
           />
-          <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            {habits.map((habit) => (
-              <HabitCard
-                key={habit.id}
-                id={habit.id}
-                name={habit.name}
-                onDelete={handleHabitDeletion}
-              />
-            ))}
-          </ScrollView>
+          <GestureHandlerRootView>
+            <DraggableFlatList
+              data={habits}
+              onDragEnd={({ data }) => setHabits(data)}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={renderItem}
+              contentContainerStyle={styles.scrollViewContent}
+            />
+          </GestureHandlerRootView>
         </ThemedView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -79,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   safeArea: {
-    flex: 1, // Para que ocupe toda la pantalla
+    flex: 1,
   },
   scrollViewContent: {
     paddingHorizontal: 10,

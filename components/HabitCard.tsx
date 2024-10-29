@@ -1,4 +1,4 @@
-import { StyleSheet, Button } from 'react-native';
+import { StyleSheet, Button, Pressable } from 'react-native';
 import { Card } from 'react-native-paper';
 import { useState } from 'react';
 import {
@@ -8,17 +8,21 @@ import {
 
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
+import { useTheme } from '@/context/ThemeContext';
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface HabitCardProps {
-  id: string;
+  id: number;
   name: string;
-  onDelete: (id: string) => void;
+  onDelete: (id: number) => void;
+  onLongPress: () => void; // Para el gesto de arrastre
+  isActive: boolean; // Para cambiar el estilo si está siendo arrastrado
 }
 
 export default function HabitCard(props: HabitCardProps) {
   const [count, setCount] = useState(0); // Estado para el contador de hábitos, inicialmente 0
+  const { colors } = useTheme(); // Obtén los colores actuales del tema
 
   function handleIncrease() {
     // Añade 1 al contador de hábitos
@@ -53,17 +57,27 @@ export default function HabitCard(props: HabitCardProps) {
         renderRightActions={renderRightActions}
         onSwipeableOpen={handleDelete}
       >
-        <ThemedView style={styles.habitCard}>
-          <Card>
-            <ThemedView style={styles.row}>
-              <ThemedText style={styles.habitName}>{props.name}</ThemedText>
-              <ThemedView style={styles.counterContainer}>
-                <Button onPress={handleDecrease} title="-" />
-                <ThemedText style={styles.counter}>{count}</ThemedText>
-                <Button onPress={handleIncrease} title="+" />
+        <ThemedView
+          style={[
+            styles.habitCard,
+            props.isActive && {
+              backgroundColor: colors.background, // Cambia el fondo si está en modo de arrastre
+              opacity: 0.5,
+            },
+          ]}
+        >
+          <Pressable onLongPress={props.onLongPress}>
+            <Card>
+              <ThemedView style={styles.row}>
+                <ThemedText style={styles.habitName}>{props.name}</ThemedText>
+                <ThemedView style={styles.counterContainer}>
+                  <Button onPress={handleDecrease} title="-" />
+                  <ThemedText style={styles.counter}>{count}</ThemedText>
+                  <Button onPress={handleIncrease} title="+" />
+                </ThemedView>
               </ThemedView>
-            </ThemedView>
-          </Card>
+            </Card>
+          </Pressable>
         </ThemedView>
       </Swipeable>
     </GestureHandlerRootView>
@@ -75,6 +89,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 10,
     borderRadius: 8,
+  },
+  activeCard: {
+    backgroundColor: '#e0e0e0', // Cambia el fondo cuando está en modo de arrastre
   },
   row: {
     flexDirection: 'row',
