@@ -35,7 +35,7 @@ export default function Index() {
       {/* Contextualizador de la hora, entregando tres contextos: (Dia, Tarde, Noche) */}
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">
-          Buen {hourContext === 'dia' ? 'día' : hourContext}
+          {hourContext === 'Buenos Días' ? 'Buenos días' : hourContext}
           {'\n'}
           {name}!
         </ThemedText>

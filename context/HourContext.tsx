@@ -10,15 +10,15 @@ import React, {
 import { Hours } from '@/constants/Hours';
 
 type HourContextType = {
-  hourContext: 'dia' | 'tarde' | 'noche';
+  hourContext: 'Buenos Días' | 'Buenas Tardes' | 'Buenas Noches';
 };
 
 const HourContext = createContext<HourContextType | undefined>(undefined);
 
 export const HourProvider = ({ children }: { children: ReactNode }) => {
-  const [hourContext, setHourContext] = useState<'dia' | 'tarde' | 'noche'>(
-    'dia',
-  );
+  const [hourContext, setHourContext] = useState<
+    'Buenos Días' | 'Buenas Tardes' | 'Buenas Noches'
+  >('Buenos Días');
 
   useEffect(() => {
     const horaActual = new Date().getHours();
@@ -33,11 +33,11 @@ export const HourProvider = ({ children }: { children: ReactNode }) => {
       (horaActual >= horaInicioDia && horaActual < horaFinDia) ||
       (horaActual >= horaInicioNoche && horaActual < horaFinNoche)
     ) {
-      setHourContext('dia');
+      setHourContext('Buenos Días');
     } else if (horaActual >= horaInicioTarde && horaActual < horaFinTarde) {
-      setHourContext('tarde');
+      setHourContext('Buenas Tardes');
     } else {
-      setHourContext('noche');
+      setHourContext('Buenas Noches');
     }
   }, []);
 
