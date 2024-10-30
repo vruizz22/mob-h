@@ -19,6 +19,7 @@ import DraggableFlatList, {
 interface Habit {
   id: number;
   name: string;
+  count: number;
 }
 
 const initialHabits: Habit[] = [];
@@ -67,7 +68,7 @@ export default function HabitScreen() {
     // Agrega un nuevo hábito a la lista de hábitos
     setHabits((prevHabits) => [
       ...prevHabits,
-      { id: prevHabits.length + 1, name },
+      { id: prevHabits.length + 1, name, count: 0 }, // Inicializar count en 0
     ]);
   }
 
@@ -75,16 +76,36 @@ export default function HabitScreen() {
     guardarHabitos();
   }, [habits]);
 
+  function handleIncrease(habitID: number) {
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) =>
+        habit.id === habitID ? { ...habit, count: habit.count + 1 } : habit,
+      ),
+    );
+  }
+
+  function handleDecrease(habitID: number) {
+    setHabits((prevHabits) =>
+      prevHabits.map((habit) =>
+        habit.id === habitID
+          ? { ...habit, count: Math.max(habit.count - 1, 0) }
+          : habit,
+      ),
+    );
+  }
+
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Habit>) => (
     <HabitCard
       id={item.id}
       name={item.name}
+      count={item.count} // Pasar el valor de count
       onDelete={handleHabitDeletion}
-      onLongPress={drag} // Activa el arrastre al hacer long press
-      isActive={isActive} // Cambia el estilo de la tarjeta si está en modo de arrastre
+      onLongPress={drag}
+      isActive={isActive}
+      onIncrease={() => handleIncrease(item.id)} // Pasar la función onIncrease
+      onDecrease={() => handleDecrease(item.id)} // Pasar la función onDecrease
     />
   );
-
   return (
     <SafeAreaProvider>
       <SafeAreaView

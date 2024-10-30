@@ -3,10 +3,10 @@ import React, { useState, useCallback } from 'react';
 import { ThemedButton } from '@/components/ThemedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/core';
-
 interface Habit {
   id: number;
   name: string;
+  count: number;
 }
 
 const initialHabits: Habit[] = [];
