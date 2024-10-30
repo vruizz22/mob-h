@@ -28,13 +28,6 @@ export default function HabitScreen() {
   const [newHabit, setNewHabit] = useState('');
   const { colors } = useTheme(); // Obtén los colores actuales del tema
 
-  function handleHabitDeletion(habitID: number) {
-    // Deja solo los hábitos cuyo nombre no sea igual al hábito que se quiere eliminar
-    setHabits((prevHabits) =>
-      prevHabits.filter((habit) => habit.id !== habitID),
-    );
-  }
-
   const guardarHabitos = async () => {
     // Guardar los hábitos en AsyncStorage
     try {
@@ -57,7 +50,12 @@ export default function HabitScreen() {
     fetchHabits();
   }, []);
 
-  
+  function handleHabitDeletion(habitID: number) {
+    // Deja solo los hábitos cuyo nombre no sea igual al hábito que se quiere eliminar
+    setHabits((prevHabits) =>
+      prevHabits.filter((habit) => habit.id !== habitID),
+    );
+  }
 
   function addHabit(name: string) {
     /* Si el input es vacio mostrar una alerta pop up
@@ -72,6 +70,10 @@ export default function HabitScreen() {
       { id: prevHabits.length + 1, name },
     ]);
   }
+
+  useEffect(() => {
+    guardarHabitos();
+  }, [habits]);
 
   const renderItem = ({ item, drag, isActive }: RenderItemParams<Habit>) => (
     <HabitCard
