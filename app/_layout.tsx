@@ -8,7 +8,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+// Previene que la pantalla de splash se oculte automáticamente hasta que se cargue la fuente
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
