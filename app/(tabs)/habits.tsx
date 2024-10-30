@@ -8,8 +8,9 @@ import TimerCount from '@/components/TimerCount';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedButton } from '@/components/ThemedButton';
 import { useTheme } from '@/context/ThemeContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DraggableFlatList, {
   RenderItemParams,
 } from 'react-native-draggable-flatlist';
@@ -33,6 +34,30 @@ export default function HabitScreen() {
       prevHabits.filter((habit) => habit.id !== habitID),
     );
   }
+
+  const guardarHabitos = async () => {
+    // Guardar los hábitos en AsyncStorage
+    try {
+      // Pasar la lista de hábitos a un string JSON
+      const jsonValue = JSON.stringify(habits);
+      await AsyncStorage.setItem('habits', jsonValue);
+    } catch (e) {
+      Alert.alert('Error', 'No se pudo guardar el hábito');
+    }
+  };
+
+  useEffect(() => {
+    const fetchHabits = async () => {
+      const jsonValue = await AsyncStorage.getItem('habits');
+      if (jsonValue !== null) {
+        const habitosCargados = jsonValue != null ? JSON.parse(jsonValue) : [];
+        setHabits(habitosCargados);
+      }
+    };
+    fetchHabits();
+  }, []);
+
+  
 
   function addHabit(name: string) {
     /* Si el input es vacio mostrar una alerta pop up
@@ -71,6 +96,8 @@ export default function HabitScreen() {
             onPress={() => {
               addHabit(newHabit);
               setNewHabit('');
+              // Cada vez que se agrega un hábito, guardar la lista de hábitos
+              guardarHabitos();
             }}
           />
           <GestureHandlerRootView>

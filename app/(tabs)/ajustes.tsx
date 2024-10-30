@@ -8,6 +8,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedButton } from '@/components/ThemedButton';
 import ChangeColorButton from '@/components/ChangeColorButton';
+import ShareButton from '@/components/ShareButton';
 
 export default function AjusteScreen() {
   const router = useRouter();
@@ -15,6 +16,8 @@ export default function AjusteScreen() {
   const handleLogout = async () => {
     // Elimina el nombre del almacenamiento
     await AsyncStorage.removeItem('username');
+    // Elimniar los habitos del almacenamiento
+    await AsyncStorage.removeItem('habits');
     // Redirige a la pantalla de bienvenida
     router.replace('/welcome');
   };
@@ -27,6 +30,8 @@ export default function AjusteScreen() {
         <ThemedButton title="Cerrar sesión" onPress={handleLogout} />
         <ThemedText style={styles.optionTitle}>Cambiar Color</ThemedText>
         <ChangeColorButton />
+        <ThemedText style={styles.optionTitle}>Compartir</ThemedText>
+        <ShareButton />
       </ThemedView>
     </ThemedView>
   );

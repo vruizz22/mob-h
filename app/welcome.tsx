@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-
+import WelcomeSound from '@/components/WelcomeSound';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedButton } from '@/components/ThemedButton';
@@ -39,6 +39,7 @@ export default function WelcomeScreen() {
         onChangeText={setName}
       />
       <ThemedButton title="Comenzar" onPress={handleStart} />
+      <WelcomeSound />
     </ThemedView>
   );
 }

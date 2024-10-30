@@ -20,7 +20,7 @@ interface HabitCardProps {
   isActive: boolean; // Para cambiar el estilo si está siendo arrastrado
 }
 
-export default function HabitCard(props: HabitCardProps) {
+export default function HabitCard(props: HabitCardProps) { 
   const [count, setCount] = useState(0); // Estado para el contador de hábitos, inicialmente 0
   const { colors } = useTheme(); // Obtén los colores actuales del tema
 

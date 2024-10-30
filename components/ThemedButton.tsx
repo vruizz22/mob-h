@@ -3,8 +3,8 @@ import {
   type TouchableOpacityProps,
   StyleSheet,
 } from 'react-native';
-import { ThemedView } from './ThemedView';
-import { ThemedText } from './ThemedText';
+import { ThemedView } from '@/components/ThemedView';
+import { ThemedText } from '@/components/ThemedText';
 
 export type ThemedButtonProps = TouchableOpacityProps & {
   lightColor?: string;
